@@ -48,5 +48,24 @@ namespace tech_test_payment_api.Controllers
                 return Problem(error.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetCustomerById(Guid id)
+        {
+            try
+            {
+                var customer = _customerCtx.Customers.Find(id);
+
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+                return Ok(customer);
+            }
+            catch (Exception error)
+            {
+                return Problem(error.Message);
+            }
+        }
     }
 }
