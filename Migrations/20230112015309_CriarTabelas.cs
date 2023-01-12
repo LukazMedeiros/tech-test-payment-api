@@ -27,6 +27,8 @@ namespace techtestpaymentapi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.UniqueConstraint("PK_Customer_CPF_Unique", x => x.CPF);
+                    table.UniqueConstraint("PK_Customer_Email_Unique", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,6 +45,8 @@ namespace techtestpaymentapi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Seller", x => x.Id);
+                    table.UniqueConstraint("PK_Seller_CPF_Unique", x => x.CPF);
+                    table.UniqueConstraint("PK_Seller_Email_Unique", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(

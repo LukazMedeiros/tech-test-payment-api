@@ -37,7 +37,7 @@ namespace tech_test_payment_api.Controllers
             {
                 _customerCtx.Customers.Add(customer);
                 _customerCtx.SaveChanges();
-                return Ok();
+                return CreatedAtAction(nameof(GetCustomerById), new { id = customer.Id }, customer);
             }
             catch (DbUpdateException)
             {
