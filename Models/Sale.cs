@@ -5,7 +5,8 @@ namespace tech_test_payment_api.Models
         public Guid Id { get; set; }
         public Seller Seller { get; set; }
         public Customer Customer { get; set; }
+        public List<string> Items { get; set; }
         public DateTime Date { get; set; }
-        EnumSaleStatus Status { get; set; }
+        public EnumSaleStatus Status { get; set; }
     }
 }

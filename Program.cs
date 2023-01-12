@@ -1,15 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using tech_test_payment_api.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<SaleContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
+
+builder.Services.AddDbContext<CustomerContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
+
+builder.Services.AddDbContext<SellerContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("default")));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
