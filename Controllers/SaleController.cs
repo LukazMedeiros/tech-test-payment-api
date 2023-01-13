@@ -71,5 +71,53 @@ namespace tech_test_payment_api.Controllers
                 return Problem(error.Message);
             }
         }
+
+        [HttpPatch("{id}")]
+        public IActionResult UpdateSaleStatus(Guid id, Sale sale)
+        {
+            string ErrorMessage = "invalid status";
+            var saleDatabase = _saleCtx.Sales.Find(id);
+            if (saleDatabase == null)
+            {
+                return NotFound();
+            }
+
+            switch (saleDatabase.Status)
+            {
+                case EnumSaleStatus.AwaitingPayment:
+                    if (sale.Status != EnumSaleStatus.PaymentAccept && sale.Status != EnumSaleStatus.canceled)
+                    {
+                        return BadRequest(new { Error = ErrorMessage });
+                    }
+                    break;
+                case EnumSaleStatus.PaymentAccept:
+                    if (sale.Status != EnumSaleStatus.SentToCarrier && sale.Status != EnumSaleStatus.canceled)
+                    {
+                        return BadRequest(new { Error = ErrorMessage });
+                    }
+                    break;
+                case EnumSaleStatus.SentToCarrier:
+                    if (sale.Status != EnumSaleStatus.Delivered)
+                    {
+                        return BadRequest(new { Error = ErrorMessage });
+                    }
+                    break;
+            }
+            saleDatabase.Status = sale.Status;
+            try
+            {
+                _saleCtx.Sales.Update(saleDatabase);
+                _saleCtx.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(new { Error = "Invalid sale data" });
+            }
+            catch (Exception error)
+            {
+                return Problem(error.Message);
+            }
+        }
     }
 }
