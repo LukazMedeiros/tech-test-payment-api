@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tech_test_payment_api.Context;
@@ -19,7 +18,7 @@ namespace tech_test_payment_api.Controllers
         [HttpPost]
         public IActionResult CustomerRegister(Customer customer)
         {
-            Regex CPF = new Regex(@"\d{3}\.?\d{3}\.?\d{3}\-?\d{2}");
+            Customer c = new Customer();
             if (customer.Name == null)
             {
                 return BadRequest(new { Error = "Invalid or not received customer name" });
@@ -28,7 +27,7 @@ namespace tech_test_payment_api.Controllers
             {
                 return BadRequest(new { Error = "Invalid or not received customer address" });
             }
-            if (customer.CPF == null || !CPF.IsMatch(customer.CPF))
+            if (customer.CPF == null || !c.IsCpfMatch(customer.CPF))
             {
                 return BadRequest(new { Error = "Invalid or not received customer CPF" });
             }

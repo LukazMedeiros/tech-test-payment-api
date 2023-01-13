@@ -1,5 +1,4 @@
 
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tech_test_payment_api.Context;
@@ -20,12 +19,12 @@ namespace tech_test_payment_api.Controllers
         [HttpPost]
         public IActionResult SellerRegister(Seller seller)
         {
-            Regex CPF = new Regex(@"\d{3}\.?\d{3}\.?\d{3}\-?\d{2}");
+            Seller s = new Seller();
             if (seller.Name == null)
             {
                 return BadRequest(new { Error = "Invalid or not received seller name" });
             }
-            if (seller.CPF == null || !CPF.IsMatch(seller.CPF))
+            if (seller.CPF == null || !s.IsCpfMatch(seller.CPF))
             {
                 return BadRequest(new { Error = "Invalid or not received seller CPF" });
             }
